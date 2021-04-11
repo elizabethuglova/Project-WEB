@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>Добавление записи</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Новое место</h1>
+    <form method="post">
+        <select name="what">
+            <option value="1">Достопримечательность</option>
+            <option value="2">Музей</option>
+            <option value="3">Парк</option>
+            <option value="4">Интересное место</option>
+        </select><br>
+        <br><input type="text" class="form-control" name="title" id="title" placeholder="Название"><br>
+        <input type="text" class="form-control" name="address" id="address" placeholder="Адрес места"><br>
+        <input type="text" class="form-control" name="description" id="description" placeholder="Описание"><br>
+        <button class="btn btn-success" type="submit">Добавить</button>
+    </form>
+
+</div>
+
+{% endblock %}
+
