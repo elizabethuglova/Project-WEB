@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>Основная страница</title>
+{% endblock %}
+
+{% block body %}
+<div class="nav-scroller py-1 mb-2">
+    <nav class="nav d-flex justify-content-between">
+      <a class="p-2 link-secondary" href="/attractions">Достопримечательности</a>
+      <a class="p-2 link-secondary" href="/museums">Музеи</a>
+      <a class="p-2 link-secondary" href="/parks">Парки</a>
+      <a class="p-2 link-secondary" href="/interesting_place">Интересные места</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container"></main>
+    <div>
+      <p class="aligncenter">
+        <img src="static/img/moscow.jpg">
+      </p>
+
+      <style>
+      .aligncenter {text-align: center;}
+      </style>
+
+      <nav class="blog-pagination" aria-label="Pagination">
+        <a class="btn btn-outline-primary" href="/create_new_note">Создать запись</a>
+      </nav>
+    </div>
+  </div>
+</main><!-- /.container -->
+{% endblock %}
