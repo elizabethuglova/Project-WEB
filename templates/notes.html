@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block body %}
+<main class="container">
+    <h1>{{ h1 }}</h1>
+    <div class="row mb-2">
+    {% for el in data %}
+        <div class="col-md-6">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+              <h1 class="mb-0">{{ el.title }}</h1>
+              <div class="mb-1 text-muted">{{ el.address }}</div>
+              <p class="card-text mb-auto">{{ el.description }}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+</main>
+{% endblock %}

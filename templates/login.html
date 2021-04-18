@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Войти</title>
+</head>
+<body>
+<div class="container">
+    <h1>Войти</h1>
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    <form action="" method="post" class="form-contact">
+        <br><p><label>Почта: </label> <input type="text" name="email" id="email"><br>
+        <br><p><label>Пароль: </label> <input type="password" name="password" id="password"><br>
+        <br><button class="btn btn-success" type="submit">Войти</button>
+    </form>
+</div>
+</body>
+</html>
