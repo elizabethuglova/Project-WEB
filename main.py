@@ -181,5 +181,5 @@ def redirect_to_login(response):
 
 
 if __name__ == '__main__':
-    db_session.global_init("db/places.db")
+    db_session.global_init("places.db")
     app.run(port=8080, host='127.0.0.1')
