@@ -20,7 +20,8 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(user_id)
+    db = db_session.create_session()
+    return db.query(Users).get(user_id)
 
 
 #  начальная страница: выбор регистрация или авторизация
@@ -163,8 +164,9 @@ def register():
 def login():
     email = request.form.get('email')
     password = request.form.get('password')
+    db = db_session.create_session()
     if email and password:
-        user = Users.query.filter_by(email=email).first()
+        user = db.query(Users).filter_by(email=email).first()
         if check_password_hash(user.password, password):
             login_user(user)
             return redirect("/main")
