@@ -1,18 +1,21 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required
+from flask_login import LoginManager, UserMixin, login_user
 
 app = Flask(__name__)
 app.secret_key = 'some'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///places.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+db = SQLAlchemy(app)  # подключение базы данных
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+# создание таблиц в базе данных
 
+
+# таблица с информацией о достопримечательностях
 class Attractions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
@@ -20,6 +23,7 @@ class Attractions(db.Model):
     description = db.Column(db.Text, nullable=False)
 
 
+# таблица с информацией о музеях
 class Museums(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
@@ -27,6 +31,7 @@ class Museums(db.Model):
     description = db.Column(db.Text, nullable=False)
 
 
+# таблица с информацией о парках
 class Parks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
@@ -34,6 +39,7 @@ class Parks(db.Model):
     description = db.Column(db.Text, nullable=False)
 
 
+# таблица с информацией об интересных местах
 class InterestingPlaces(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
@@ -41,6 +47,7 @@ class InterestingPlaces(db.Model):
     description = db.Column(db.Text, nullable=False)
 
 
+# таблица с информацией о пользователях
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -53,24 +60,27 @@ def load_user(user_id):
     return Users.query.get(user_id)
 
 
+#  начальная страница: выбор регистрация или авторизация
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
+#  основная страница
 @app.route("/main")
 def main():
     return render_template("main.html")
 
 
+#  страница, где можно добавить свою запись
 @app.route("/create_new_note", methods=['POST', 'GET'])
 def create_new_note():
     if request.method == "POST":
+        #  если запись о достопримечательности, то она добавляется на соответсвующую страницу
         if request.form['what'] == '1':
             title = request.form['title']
             address = request.form['address']
             description = request.form['description']
-
             place = Attractions(title=title, address=address, description=description)
             try:
                 db.session.add(place)
@@ -81,11 +91,11 @@ def create_new_note():
                 db.session.rollback()
                 return "Ошибка"
 
+        #  если запись о музее, то она добавляется на соответсвующую страницу
         if request.form['what'] == '2':
             title = request.form['title']
             address = request.form['address']
             description = request.form['description']
-
             place = Museums(title=title, address=address, description=description)
             try:
                 db.session.add(place)
@@ -96,11 +106,11 @@ def create_new_note():
                 db.session.rollback()
                 return "Ошибка"
 
+        #  если запись о парке, то она добавляется на соответсвующую страницу
         if request.form['what'] == '3':
             title = request.form['title']
             address = request.form['address']
             description = request.form['description']
-
             place = Parks(title=title, address=address, description=description)
             try:
                 db.session.add(place)
@@ -111,11 +121,11 @@ def create_new_note():
                 db.session.rollback()
                 return "Ошибка"
 
+        #  если запись об интересном месте, то она добавляется на соответсвующую страницу
         if request.form['what'] == '4':
             title = request.form['title']
             address = request.form['address']
             description = request.form['description']
-
             place = InterestingPlaces(title=title, address=address, description=description)
             try:
                 db.session.add(place)
@@ -129,30 +139,35 @@ def create_new_note():
         return render_template("create_new_note.html")
 
 
+#  страница с записями о достопримечательностях
 @app.route("/attractions")
 def attractions():
     p = Attractions.query.all()
     return render_template("notes.html", data=p, title='Достопримечательности', h1='Достопримечательности')
 
 
+#  страница с записями о музеях
 @app.route("/museums")
 def museums():
     p = Museums.query.all()
     return render_template("notes.html", data=p, title='Музеи', h1='Музеи')
 
 
+#  страница с записями о парках
 @app.route("/parks")
 def parks():
     p = Parks.query.all()
     return render_template("notes.html", data=p, title='Парки', h1='Парки')
 
 
+#  страница с записями об интересных местах
 @app.route("/interesting_places")
 def interesting_places():
     p = InterestingPlaces.query.all()
     return render_template("notes.html", data=p, title='Интересные места', h1='Интересные места')
 
 
+#  страница с формой регистрации
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
@@ -171,6 +186,7 @@ def register():
     return render_template("register.html")
 
 
+#  страница с формой авторизации
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     email = request.form.get('email')
@@ -184,6 +200,7 @@ def login():
     return render_template("login.html")
 
 
+#  дополнительный метод для авторизации
 @app.after_request
 def redirect_to_login(response):
     if response.status_code == 401:
